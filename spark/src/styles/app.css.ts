@@ -33,18 +33,19 @@ export const loginPageStyles = {
 export const loginButtonStyles = {
   padding: '13px 40px',
   fontSize: '20px',
-  color: 'purple',
-  backgroundColor: 'white', // Google blue
+  color: '#cfcfe8',
+  backgroundColor: '#4e4e94', // Google blue
   border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
   transition: 'background-color 0.3s',
-  marginTop: '250px', 
+  marginTop: '250px',
+  fontFamily: 'Georgia',
 
   // Hover state isn't directly supported in inline styles,
   // you might need to use pseudo-classes via CSS modules or add a class via JavaScript
   '&:hover': {
-      backgroundColor: '#357AE8'
+    backgroundColor: '#357AE8'
   }
 };
 
@@ -57,6 +58,12 @@ export const titleStyles = style({
   marginTop: '3vh',
   //marginBottom: '0.5vh',
 });
+
+
+//sparkle
+
+
+
 
 export const levelsStyles = style({
   display: "flex",

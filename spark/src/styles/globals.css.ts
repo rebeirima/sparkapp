@@ -14,7 +14,7 @@ globalStyle("html, body, #root", {
 });
 
 globalStyle("body", {
-  fontFamily: '"cursive", sans-serif',
+  fontFamily: '"Georgia", sans-serif',
   vars: {
     [primaryAccent]: "#4c00b0",
     [primaryAccentMuted]: "#CBC3E3",
@@ -38,3 +38,6 @@ globalStyle("::-webkit-scrollbar-thumb", {
   background: primaryAccent,
   borderRadius: 50,
 });
+
+//sparkle scroll
+

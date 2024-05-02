@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from './components/ProfileForm';
-import { ProfileFormData } from './components/ProfileForm';
+import { ProfileFormData } from './components/ProfileFormData';
 import ProfileEditModal from './components/ProfileEditModal';
 import InviteFriendsModal from './components/InviteFriendsModal';
 import GameHeader from './components/GameHeader';
@@ -12,15 +12,7 @@ import { loginPageStyles, loginButtonStyles, appStyles, nextCardButtonStlyes, qu
 import titleSVG from './assets/title.svg';
 import { levelOne } from "./assets/levels";
 import { FaUserEdit, FaUserPlus } from 'react-icons/fa';  // Import icons if needed for additional UI elements
-
-// Interface for user profile data
-interface Profile extends ProfileFormData {
-  name: string;
-  email: string;
-  age: string;
-  location: string;
-  job: string;
-}
+import SparkleCursor from './components/SparkleCursor';
 
 function shuffle<T>(array: T[]): T[] {
   let currentIndex = array.length, temporaryValue, randomIndex;
@@ -37,7 +29,7 @@ function shuffle<T>(array: T[]): T[] {
 function App() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<ProfileFormData | null>(null);
   const [showProfileForm, setShowProfileForm] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showInviteFriends, setShowInviteFriends] = useState(false);
@@ -45,26 +37,47 @@ function App() {
   const [currLevel] = useState(Object.keys(gameState)[0] as keyof typeof gameState);
   const [currCard, setCurrCard] = useState(gameState[currLevel][0]);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
-
+  const handleCloseEditProfile = () => {
+    setShowEditProfile(false);
+    // Optional: navigate to a different route if necessary
+    // navigate('/some-route');
+  };
   const login = useGoogleLogin({
     onSuccess: tokenResponse => {
-      console.log(tokenResponse);
+      console.log(tokenResponse);  // For debugging and understanding the response structure
       setIsLoggedIn(true);
-      setProfile({ name: "User", email: "user@example.com", age: "", location: "", job: "" });
-      navigate('/home');
+      setProfile({ // Set initial data after successful login
+        name: "User",  // Placeholder, replace with actual data from tokenResponse if available
+        email: "user@example.com",  // Placeholder, replace with actual data from tokenResponse if available
+        age: "",
+        occupation: "",
+        personality: "",
+        passion: "",
+        groupRelationship: "",
+        groupDuration: "",
+        hangoutSetting: "",
+        memorableExperience: "",
+        insideJokes: "",
+        offLimitsTopics: "",
+        trustLevel: ""
+      });
+      setShowProfileForm(true);  // Show profile form to fill additional details
     },
     onError: () => {
       alert('Login Failed');
     }
   });
 
+
   const saveProfileData = (data: ProfileFormData) => {
     console.log('Profile updated:', data);
     setProfile(data);
     localStorage.setItem('userProfile', JSON.stringify(data));
     setShowEditProfile(false);
-    navigate('/profile');
+    console.log('Navigating to home');
+    navigate('/home');
   };
+
 
   const sendInvites = (email: string) => {
     console.log('Invite sent to:', email);
@@ -84,6 +97,7 @@ function App() {
   };
 
   if (!isLoggedIn) {
+    console.log("Rendering login page");
     return (
       <div style={loginPageStyles}>
         <button onClick={() => login()} style={loginButtonStyles}>Login</button>
@@ -91,11 +105,20 @@ function App() {
     );
   }
 
+  if (showProfileForm && profile) {
+    console.log("Rendering profile form");
+    return (
+      <ProfileForm onSave={saveProfileData} initialData={profile} />
+    );
+  }
+
+  console.log("Rendering main app");
   return (
     <div className={appStyles}>
+      <SparkleCursor />
       <GameHeader onEditProfile={() => setShowEditProfile(true)} onInviteFriends={() => setShowInviteFriends(true)} />
-      {showEditProfile && profile && <ProfileEditModal user={profile} onSave={saveProfileData} onClose={() => setShowEditProfile(false)} />}
-      {showInviteFriends && <InviteFriendsModal onSendInvites={sendInvites} onClose={() => setShowInviteFriends(false)} />}
+      {profile && <ProfileEditModal user={profile} onSave={saveProfileData} onClose={handleCloseEditProfile}  />}
+      {<InviteFriendsModal onSendInvites={sendInvites} onClose={() => setShowInviteFriends(false)} />}
       <div className={questionStyles}>
         <img src={titleSVG} alt="Title" className={titleStyles} />
         <Card styleName={bigCardStyles} question={currCard} />
