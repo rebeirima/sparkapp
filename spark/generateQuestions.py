@@ -1,12 +1,23 @@
+import sys
+import json
 import genai
 
 # Configure the API key
 genai.configure(api_key='AIzaSyCm2dlscl5CsxZHt6sVsRjuh2YaUp8eCRk')
 
+model = genai.GenerativeModel('gemini-pro')
+
 # Define a function to generate questions
-def generate_questions(context, conflict):
-    conflict_type = " with a focus on resolving conflict" if conflict == "Yes" else ""
-    prompt = f"Generate 40 questions to foster connection and feelings of closeness for {context} relationships{conflict_type}, and incorporate themes related to the group description. return just a python list of strings of each of the questions generated. Don't number them."
+def generate_questions(profile_data):
+    # Extract relevant information from profile data
+    group_relationship = profile_data.get("groupRelationship", "")
+    inside_jokes = profile_data.get("insideJokes", "")
+    memorable_experience = profile_data.get("memorableExperience", "")
+    off_limits_topics = profile_data.get("offLimitsTopics", "")
+    trust_level = profile_data.get("trustLevel", "")
+
+    # Construct prompt with placeholders for inside joke and memorable experience
+    prompt = f"Generate 40 questions to foster connection and feelings of closeness for {group_relationship} relationships. Incorporate an inside joke about {inside_jokes} and a memorable experience involving {memorable_experience}. Avoid topics related to {off_limits_topics}. How can we build trust together?"
 
     # Generate questions using the model
     response = model.generate_content(prompt)
@@ -16,10 +27,11 @@ def generate_questions(context, conflict):
 
     return questions
 
+# Read profile data from command line arguments
+profile_data = json.loads(sys.argv[1])
+
 # Call the function to generate questions
-relationship_description = "Replace this with your actual relationship description"
-conflict = "No"  # Replace with "Yes" if there is conflict
-generated_questions = generate_questions(relationship_description, conflict)
+generated_questions = generate_questions(profile_data)
 
 # Print the generated questions
-print(generated_questions)
+print(json.dumps(generated_questions))
