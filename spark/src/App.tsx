@@ -76,23 +76,28 @@ function App() {
     setShowEditProfile(false);
        
     
-    // Call the function to execute generateQuestions.js
-    executeGenerateQuestionsScript();
-    console.log('Executed generateQuestions.js');
+    executeGenerateQuestions(); // Call the function to execute the generateQuestions.py script
+    console.log('execute generate questions');
     console.log('Navigating to home');
     navigate('/home');
 };
 
-  const executeGenerateQuestionsScript = () => {
-      // Create a script element
-      const script = document.createElement('script');
-      script.src = './generateQuestions.js'; // Correct relative path from App.tsx to generateQuestions.js
-      script.async = true;
-  
-      // Append the script to the document body
-      document.body.appendChild(script);
-  };
-
+const executeGenerateQuestions = () => {
+    // Make a POST request to the backend server endpoint responsible for executing the Python script
+    fetch('/execute_generate_questions', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('generateQuestions.py executed successfully');
+        } else {
+            console.error('Failed to execute generateQuestions.py');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+};
   const sendInvites = (email: string) => {
     console.log('Invite sent to:', email);
     setShowInviteFriends(false);
