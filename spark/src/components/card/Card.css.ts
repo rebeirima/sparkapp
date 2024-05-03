@@ -12,6 +12,7 @@ export const cardStyles = style({
   ":hover": {
     transform: "scale(1.02)",
   },
+  fontFamily: "Georgia, serif", // Adding font family
 });
 
 export const bigCardStyles = style({
@@ -32,15 +33,13 @@ export const bigCardStyles = style({
   0px 30px 90px rgba(0, 0, 0, 0.07)
   `,
   padding: 50,
+  fontFamily: "Georgia, serif", // Adding font family
 });
 
 export const smallCardStyles = style({
-  // margin: "auto",
   fontSize: 18,
   width: "100%",
   height: "100%",
-  // marginTop: "",
-  // marginBottom: "1vh",
   margin: "1rem 0",
   borderRadius: 30,
   boxShadow: `
@@ -53,4 +52,5 @@ export const smallCardStyles = style({
   0px 30px 90px rgba(0, 0, 0, 0.07)
   `,
   padding: 20,
+  fontFamily: "Georgia, serif", // Adding font family
 });
