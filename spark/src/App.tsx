@@ -74,30 +74,11 @@ function App() {
     setProfile(data);
     localStorage.setItem('userProfile', JSON.stringify(data));
     setShowEditProfile(false);
-       
-    
-    executeGenerateQuestions(); // Call the function to execute the generateQuestions.py script
-    console.log('execute generate questions');
     console.log('Navigating to home');
     navigate('/home');
 };
 
-const executeGenerateQuestions = () => {
-    // Make a POST request to the backend server endpoint responsible for executing the Python script
-    fetch('/execute_generate_questions', {
-        method: 'POST'
-    })
-    .then(response => {
-        if (response.ok) {
-            console.log('generateQuestions.py executed successfully');
-        } else {
-            console.error('Failed to execute generateQuestions.py');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-};
+
   const sendInvites = (email: string) => {
     console.log('Invite sent to:', email);
     setShowInviteFriends(false);
