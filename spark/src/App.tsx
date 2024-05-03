@@ -74,10 +74,24 @@ function App() {
     setProfile(data);
     localStorage.setItem('userProfile', JSON.stringify(data));
     setShowEditProfile(false);
+       
+    
+    // Call the function to execute generateQuestions.js
+    executeGenerateQuestionsScript();
+    console.log('Executed generateQuestions.js');
     console.log('Navigating to home');
     navigate('/home');
-  };
+};
 
+  const executeGenerateQuestionsScript = () => {
+      // Create a script element
+      const script = document.createElement('script');
+      script.src = './generateQuestions.js'; // Correct relative path from App.tsx to generateQuestions.js
+      script.async = true;
+  
+      // Append the script to the document body
+      document.body.appendChild(script);
+  };
 
   const sendInvites = (email: string) => {
     console.log('Invite sent to:', email);
